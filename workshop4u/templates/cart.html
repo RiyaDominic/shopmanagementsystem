@@ -1,0 +1,144 @@
+{% extends 'index.html' %}
+{% block content %}
+<style>
+    h4,
+    h4,
+    h5 {
+        display: inline;
+    }
+
+    .form-control {
+        border: none;
+    }
+
+    .btn:hover {
+        transform: scale(1.1);
+    }
+
+    .card {
+        background-color: #fff;
+        border-radius: 10px;
+        border: none;
+        position: relative;
+        margin-bottom: 30px;
+        box-shadow: 0 0.46875rem 2.1875rem rgba(90, 97, 105, 0.1), 0 0.9375rem 1.40625rem rgba(90, 97, 105, 0.1), 0 0.25rem 0.53125rem rgba(90, 97, 105, 0.12), 0 0.125rem 0.1875rem rgba(90, 97, 105, 0.1);
+    }
+
+    .l-bg-cherry {
+        background: linear-gradient(to right, #493240, #f09) !important;
+        color: #fff;
+    }
+
+    .card .card-statistic-3 .card-icon-large .fas,
+    .card .card-statistic-3 .card-icon-large .far,
+    .card .card-statistic-3 .card-icon-large .fab,
+    .card .card-statistic-3 .card-icon-large .fal {
+        font-size: 110px;
+    }
+
+    .card .card-statistic-3 .card-icon {
+        text-align: center;
+        line-height: 50px;
+        margin-left: 15px;
+        color: #000;
+        position: absolute;
+        right: -5px;
+        top: 20px;
+        opacity: 0.1;
+    }
+
+    .l-bg-cyan {
+        background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+        color: #fff;
+    }
+</style>
+<div class="container mt-5">
+    <div class="row">
+        {% if total != 0 %}
+
+
+        <div class="col-8">
+
+            <div class="row ">
+                {% for item in cart %}
+                <div class="col-xl-6 col-lg-6">
+                    <div class="card l-bg-cherry p-1">
+                        <div class="card-image">
+                            <img src="{{item.product.product_Image.url}}" alt="" style="width:100%;height: 300px;">
+                        </div>
+                        <div class="card-statistic-3 p-4">
+                            <div class="card-icon card-icon-large me-3"><i class="fas fa-shopping-cart"></i></div>
+                            <div class="mb-4">
+                                <h5 class="card-title mb-0 text-light">{{item.product.Product_Brand}}</h5>
+                            </div>
+                            <div class="row align-items-center mb-2 d-flex">
+                                <div class="col-8">
+                                    <h2 class="d-flex align-items-center mb-0 text-light">
+                                        {{item.product.Product_Name}}
+                                    </h2>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <span> ₹ {{item.product.Product_unit_Price}} <i class="fa fa-check"></i></span>
+                                </div>
+                            </div>
+                            <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                                <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%"
+                                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+                                </div>
+                            </div>
+                            <div class="mt-5 d-flex justify-content-end">
+                                <a class="btn btn-light"
+                                    onclick="return confirm('Are you sure you want to Remove this item from Cart?');"
+                                    href="{%url 'DeleteCart' item.id %}"><i class="fa fa-trash text-danger"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <h1 class="m5 text-center text-primary">Cart is empty !!! required</h1>
+        </div>
+        {% endif %}
+        <div class="col-4">
+            {% if total != 0 %}
+            <form action="{% url 'PlaceOrder' %}" method="post">
+                <div class="container p-5" style="background: #fbeec1">
+                    <h5 class="text-center text-bg-warning">Devlivery Details</h5>
+                    {% csrf_token %}
+                    <input type="text" class="form-control mt-3" placeholder="Name" value="{{request.user.username}}"
+                        required><br>
+                    <input type="number" class="form-control" placeholder="Phone Number" name="phone" required><br>
+                    <input type="text" class="form-control" name="House" placeholder="House" required><br>
+                    <input type="text" class="form-control" name="Area" placeholder="Area" required><br>
+                    <input type="text" class="form-control" name="landmark" placeholder="Land Mark" required><br>
+                    <input type="hidden" name="total" value="{{total}}">
+                    <br>
+                    <h5 class="text-center text-bg-warning">ORDER SUMMARY </h5>
+                    <br>
+                    <hr>
+                    <h5>Total Items: {{itemcount}}</h5>
+                    <br>
+                    <h5>Total amount: ₹ {{totalbeforetax}}</h5>
+                    <br>
+                    <h5>Tax Amount: ₹ {{tax}}</h5>
+                    <br>
+                    <hr>
+                    <h5>Total Payable: ₹ {{total}}</h5>
+
+                    <hr>
+                    <br><br>
+                    <button class="btn rounded-5 text-light" style="background: #613333;">Proceed With
+                        Checkoout</button>
+                    <br><br>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

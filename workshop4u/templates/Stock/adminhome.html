@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%static 'css/styles.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">
+    </script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet"
+        type="text/css" />
+    <title>Admin- Workshop4u </title>
+    <style>
+        .item a {
+            transition: all .3s ease;
+            color: #004770 !important;
+        }
+
+        .item a:hover {
+            text-decoration: none;
+            color: white !important;
+            transform: scale(1.1);
+            background: #004770;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body onload=display_ct();>
+    <nav>
+        <div class="billing-nav  px-5 d-flex justify-content-between align-items-center">
+            <div class="item fs-2 fw-bold"><a href="{%url 'AdminHome' %}" style="color: white !important;"><span
+                        class="fw-bold" style="color: rgb(255, 129, 129);">SAR AUTOMOBILES</span>
+                    Dasboard</a> </div>
+            <div>
+                <a href="{%url 'SignOut' %}" class="btn btn-danger" style="border-radius: 0;">Logout</a>
+            </div>
+        </div>
+        <div class="right d-flex border-bottom justify-content-between px-5">
+            <div class="left d-flex">
+                <div class="item fs-5"><a class="text-primary p-2" href="{%url 'MakeStock' %}">Upload Stock</a></div>
+                <div class="item fs-5"><a class="text-primary p-2" href="{%url 'SignUpStaff' %}">Add New Staff</a>
+                </div>
+                <div class="item fs-5"><a class="text-primary p-2" href="{%url 'Billing' %}">Add Billing</a></div>
+            </div>
+            <div class="right d-flex">
+                <div class="item fs-5"><a class="text-primary p-2" href="{%url 'TotalBills' %}">Bills</a></div>
+                <div class="item fs-5"><a class="text-primary p-2" href="{%url 'TotalStock' %}">Stock</a> </div>
+                <div class="item fs-5"><a class="text-primary p-2" href="{%url 'TotalSales' %}">Sales</a> </div>
+            </div>
+
+        </div>
+    </nav>
+    <div class="container-fluid time py-3 border-0">
+        <div class="container ">
+            <h6 id="date" class=" text-muted text-end"></h6>
+            {% if request.user.firstname %}
+            <h6 style="color: Green;">Welcome {{request.user.firstname}}</h6>
+            {% endif %}
+        </div>
+    </div>
+
+    <div style="min-height: 60vh;">
+        {% block content %}
+
+        <div class="container mt-5">
+            {% for message in messages %}
+            <h6 style="color:red">{{message}}</h6>
+            {% endfor %}
+            <h1 class="fs-1 my-5 text-center text-muted">SALES INFORMATION</h1>
+            <div class="details-container " style="min-height: 50vh;">
+                <div class="items card shadow p-5"
+                    style="background: linear-gradient(to bottom,rgb(255, 159, 175), light);height: 50%;">
+                    <h5>Stock</h5>
+                    <h2>{{stocktotal}}</h2>
+                </div>
+                <div class="items card shadow p-5"
+                    style="background: linear-gradient(to bottom,rgb(255, 159, 175), light);height: 50%;">
+                    <h5>Users</h5>
+                    <h2>{{usersTotal}}</h2>
+                </div>
+                <div class="items card shadow p-5"
+                    style="background: linear-gradient(to bottom,rgb(255, 159, 175), light);height: 50%;">
+                    <h5>Total Sales</h5>
+                    <h2>{{salesTotal}}</h2>
+                </div>
+                <!-- <div class="items card shadow p-5"
+                style="background: linear-gradient(to bottom,rgb(255, 159, 175), light);height: 50%;">
+                <h5>Cash Flow</h5>
+            </div> -->
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+    <div class="container-fluid bg-footer bg-success text-light mt-5" style="background: #004770 !important">
+        <div class="container">
+            <div class="row gx-5">
+                <div class="col-lg-8 col-md-6">
+                    <div class="row gx-5">
+                        <div class="col-lg-4 col-md-12 pt-5 mb-5">
+                            <h4 class="text-light mb-4">Get In Touch</h4>
+                            <div class="d-flex mb-2">
+                                <i class="bi bi-geo-alt text-light me-2"></i>
+                                <p class="text-light mb-0">123 Street, Kochi, Kerala</p>
+                            </div>
+                            <div class="d-flex mb-2">
+                                <i class="bi bi-envelope-open text-light me-2"></i>
+                                <p class="text-light mb-0">sarautomobiles@gmail.com</p>
+                            </div>
+                            <div class="d-flex mb-2">
+                                <i class="bi bi-telephone text-light me-2"></i>
+                                <p class="text-light mb-0">9074665710</p>
+                            </div>
+                            <div class="d-flex mt-4">
+                                <a class="btn btn-secondary btn-square rounded-circle me-2" href="#"><i
+                                        class="fab fa-twitter"></i></a>
+                                <a class="btn btn-secondary btn-square rounded-circle me-2" href="#"><i
+                                        class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-secondary btn-square rounded-circle me-2" href="#"><i
+                                        class="fab fa-linkedin-in"></i></a>
+                                <a class="btn btn-secondary btn-square rounded-circle" href="#"><i
+                                        class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-12 pt-0 pt-lg-5 mb-5">
+                            <h4 class="text-light mb-4">Quick Links</h4>
+                            <div class="d-flex flex-column justify-content-start">
+                                <a class="text-light mb-2" href="#"><i
+                                        class="bi bi-arrow-right text-light me-2"></i>Home</a>
+                                <a class="text-light mb-2" href="#"><i
+                                        class="bi bi-arrow-right text-light me-2"></i>About Us</a>
+                                <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-light me-2"></i>Our
+                                    Services</a>
+                                <a class="text-light mb-2" href="#"><i
+                                        class="bi bi-arrow-right text-light me-2"></i>Meet The Team</a>
+                                <a class="text-light mb-2" href="#"><i
+                                        class="bi bi-arrow-right text-light me-2"></i>Latest Blog</a>
+                                <a class="text-light" href="#"><i class="bi bi-arrow-right text-light me-2"></i>Contact
+                                    Us</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-12 pt-0 pt-lg-5 mb-5">
+                            <h4 class="text-light mb-4">Popular Links</h4>
+                            <div class="d-flex flex-column justify-content-start">
+                                <a class="text-light mb-2" href="#"><i
+                                        class="bi bi-arrow-right text-light me-2"></i>Home</a>
+                                <a class="text-light mb-2" href="#"><i
+                                        class="bi bi-arrow-right text-light me-2"></i>About Us</a>
+                                <a class="text-light mb-2" href="#"><i class="bi bi-arrow-right text-light me-2"></i>Our
+                                    Services</a>
+                                <a class="text-light mb-2" href="#"><i
+                                        class="bi bi-arrow-right text-light me-2"></i>Meet The Team</a>
+                                <a class="text-light mb-2" href="#"><i
+                                        class="bi bi-arrow-right text-light me-2"></i>Latest Blog</a>
+                                <a class="text-light" href="#"><i class="bi bi-arrow-right text-light me-2"></i>Contact
+                                    Us</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mt-4">
+                    <div
+                        class="d-flex flex-column align-items-center justify-content-center text-center bg-secondary p-5">
+                        <h4 class="text-light">Newsletter</h4>
+                        <h6 class="text-light">Subscribe Our Newsletter</h6>
+                        <p>Amet justo diam dolor rebum lorem sit stet sea justo kasd</p>
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control border-light p-3" placeholder="Your Email">
+                                <button class="btn btn-primary">Sign Up</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid bg-dark text-light py-4">
+        <div class="container text-center">
+            <p class="mb-0 text-light">&copy; <a class="text-danger fw-bold" href="#">workshop4u</a>. All Rights
+                Reserved.
+                Designed by <a class="text-secondary fw-bold" href="https://htmlcodex.com"></a></p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function display_c() {
+            var refresh = 1000; // Refresh rate in milli seconds
+            mytime = setTimeout('display_ct()', refresh)
+        }
+
+        function display_ct() {
+            var x = new Date()
+            document.getElementById('date').innerHTML = x.toDateString();
+            display_c();
+        }
+    </script>
+</body>
+
+</html>

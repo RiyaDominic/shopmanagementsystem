@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+{% block content %}
+<style>
+    h4,
+    h4,
+    h5 {
+        display: inline;
+    }
+
+    .form-control {
+        border: none;
+    }
+
+    .btn:hover {
+        transform: scale(1.1);
+    }
+</style>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-10">
+            {% if total != 0 %}
+            <h1 class="text-center">Your Orders</h1>
+            <table class="table table-striped table-success p-5">
+                <tr>
+                    <th class="ps-3">Item Name</th>
+                    <th>Item Brand</th>
+                    <th>Item Price</th>
+                    <th>GST</th>
+                    <th>Item Image</th>
+                    <th>Order Status</th>
+                </tr>
+                {% for item in cart %}
+                <tr>
+                    <td class="ps-3">{{item.product.Product_Name}}</td>
+                    <td>{{item.product.Product_Brand}}</td>
+                    <td>{{item.product.Product_unit_Price}}</td>
+                    <td>{{item.product.GST}}</td>
+                    <td><img src="{{item.product.product_Image.url}}" alt="" style="width:50px;height:auto;"></td>
+                    <td>{{item.status}}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+            {% else %}
+            <h1 class="m5 text-center text-primary">No Orders found !!! Hurry Up and order some Tools</h1>
+
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

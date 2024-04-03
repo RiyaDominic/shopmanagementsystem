@@ -1,0 +1,99 @@
+{% extends 'Stock/adminhome.html' %}
+{% block content %}
+<style>
+    .right-box {
+        background: #004770;
+        padding: 50px;
+    }
+
+    label {
+        color: white;
+    }
+
+    .btn-success {
+        background: rgb(40, 255, 165);
+        color: #004770;
+    }
+</style>
+<div class="container mt-5">
+
+    <div class="row">
+        <div class="col-6 pe-5">
+            {% if total == 0 %}
+            <h2 class="text-center">No Items Added</h2>
+
+            {% else %}
+            <div class="container text-center form-body mt-3">
+                <h4>Bill Details</h4><br>
+                {% for m in messages %}
+                <h6 style="color: green;">{{m}}</h6>
+                {% endfor %}
+                <table class="table">
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>remove</th>
+                    </tr>
+                    {% for item in bill %}
+                    <tr>
+                        <td>{{item.product.Product_Name}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.product.Product_unit_Price}}</td>
+                        <th><a href="{% url 'delete_bill_product' item.id  %}" class="btn btn-outline-danger"
+                                onclick="return confirm('Confirm Removing this item?');"><i class="bi bi-trash"></i></a>
+                        </th>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <h5 class="text-end">Total ₹{{total}}</h5>
+
+
+
+                <div class="d-flex justify-content-end mt-5">
+                    <a class="btn btn-outline-primary px-5" href="{%url 'MakeSale' %}"
+                        onclick="return confirm('Do you Confirm This Purchase?');">Confirm Purchase</a>
+                </div>
+
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-6 right-box">
+            <h3 class="text-light text-center">Add New Item</h3>
+            <form action="{%url 'AddBill' %}" method="post">
+                {% csrf_token %}
+                <div class="row form-body text-center" style="padding: 10px;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label for="">Product Name</label>
+
+                        <select id="items" name="pname">
+                            <option value="">Select Product</option>
+                            {% for i in product %}
+                            <option value="{{i.Product_Name}}">{{i.Product_Name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <h2 class="text-light my-3">OR</h2>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label for="">Product Batch Code</label>
+                        <select id="items" name="pbatch">
+                            <option value="">Select Batch Code</option>
+                            {% for i in product %}
+                            <option value="{{i.Batch_Code}}">{{i.Batch_Code}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-success mt-3 fw-bold" type="submit">Add Item</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}

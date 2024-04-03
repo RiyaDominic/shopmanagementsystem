@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+
+<div class="container-fluid pt-5 text-center">
+    <div class="d-flex flex-column text-center mb-5 pt-5">
+        <h4 class="text-secondary mb-3">Plese Make your payment</h4><br>
+        <form method="post">
+            <button class="btn btn-warning" name="submit" id="pay-btn">Make Payment</button>
+        </form>
+    </div>
+</div>
+
+
+<!-- Razorpay's Javascript code. -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        // Enter the Key ID generated from the Dashboard
+        key: "{{ razorpay_merchant_key }}",
+        amount: "{{ razorpay_amount }}",
+        currency: "{{ currency }}",
+        // Your/store name.
+        name: "payment_integr",
+        order_id: "{{ razorpay_order_id }}",
+        callback_url: "{{ callback_url }}",
+    };
+    // initialise razorpay with the options.
+    var rzp1 = new Razorpay(options);
+    // add event listener to the payment button.
+    document.getElementById("pay-btn").onclick = function (e) {
+        rzp1.open();
+        e.preventDefault();
+    };
+</script>
+{% endblock %}

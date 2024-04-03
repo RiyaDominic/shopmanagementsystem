@@ -1,0 +1,46 @@
+{% extends 'Stock/adminhome.html' %}
+{% block content %}
+<style>
+    .bg-primary {
+        background: linear-gradient(to bottom, rgb(100, 100, 255), rgb(126, 218, 255));
+        transition: all 0.4s;
+        margin-right: 20px;
+    }
+
+    .bg-primary:hover {
+        transform: scale(1.1);
+    }
+</style>
+<div class="container text-center form-body mt-5">
+    <h1>Billing Details</h1><br>
+
+    <button class="border-0 py-2 px-5 bg-primary text-light">Total Sales {{count}} </button>
+    <button class="border-0 py-2 px-5 bg-primary text-light">Total Income ₹{{total}} </button>
+    <button class="border-0 py-2 px-5 bg-primary text-light">Tax Reduced (GST) ₹{{tax}} </button>
+
+    <hr>
+    {% for m in messages %}
+    <h6 style="color: green;">{{m}}</h6>
+    {% endfor %}
+    <table class="table table-striped table-success p-5">
+        <tr>
+            <th class="ps-3">Bill ID</th>
+            <th>Total Count</th>
+            <th>Total Price</th>
+            <th>Tax (GST)</th>
+            <th>Order Status</th>
+        </tr>
+        {% for item in bills %}
+        <tr>
+            <td class="ps-3">{{item.id}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.toatalprice}}</td>
+            <td>{{item.tax}}</td>
+            <td><span class="text-success">Completed</span></td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</div>
+
+{% endblock %}
